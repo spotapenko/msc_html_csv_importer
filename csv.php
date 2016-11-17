@@ -22,7 +22,9 @@ $items = get_data_from_html($xpath);
 
 $products = map_products_from_data($items);
 
-$csv_data = prepare_csv_data($products);
+$csv_data = prepare_csv_data($products, 'lighting');
+
+var_dump($csv_data);
 
 $filename = 'lighting.csv';
 

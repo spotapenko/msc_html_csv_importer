@@ -56,20 +56,23 @@ function map_products_from_data($items) {
     return $products;
 }
 
-function prepare_csv_data($products) {
+function prepare_csv_data($products, $product_category) {
     $csv_data = [];
-    $csv_data[] = array('title','img','descr');
+    $csv_data[] = array('title','img','descr','product_category');
 
     foreach($products as $product) {
         $descr_lines = explode("\n", $product['descr']);
 
         $descr = '<ul class="data-wish-item-descr">';
         foreach ($descr_lines as $line) {
-            $descr .= '<li>' . trim($line) . '</li>';
+            $trimmed_line = trim($line);
+            if ($trimmed_line) {
+                $descr .= '<li>' . $trimmed_line  . '</li>';
+            }
         }
-        $descr .= '<ul>';
+        $descr .= '</ul>';
 
-        $csv_data[] = array($product['name'], $product['img'], $descr);
+        $csv_data[] = array($product['name'], $product['img'], $descr, $product_category);
     }
 
     return $csv_data;
