@@ -53,7 +53,7 @@ function prepare_csv_data($products, $product_category) {
         foreach ($descr_lines as $line) {
             $trimmed_line = trim($line);
             if ($trimmed_line) {
-                $descr .= '<li>' . $trimmed_line  . '</li>';
+                $descr .= '<li>' . $trimmed_line  . '</li>' . "\n";
             }
         }
         $descr .= '</ul>';
