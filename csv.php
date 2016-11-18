@@ -5,7 +5,7 @@ require_once 'functions.php';
 
 //$url = 'http://localhost/test/msc/lightning.html';
 //$url = 'lightning.html';
-$url = 'kitchens-finishes.html';
+$url = 'kitchens-hardware.html';
 $page =  @file_get_contents(SITE_URL . $url);
 //get heads
 $items = [
@@ -29,7 +29,7 @@ $csv_data = prepare_csv_data($products, '');
 
 var_dump($csv_data);
 
-$filename = 'finishes-data.csv';
+$filename = 'hardware-data.csv';
 
 write_csv_file($filename, $csv_data);
 //generate csv
