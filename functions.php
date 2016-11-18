@@ -2,28 +2,38 @@
 
 
 function get_data_from_html($xpath) {
-    $items = [];
-    foreach($xpath->evaluate('//div[contains(@class,"toilets-list-view")]') as $node) {//toilets-list-view //finishes-list-view
+    $items = [];////div[contains(@class,"'.$container_class.'")]
+    foreach ($xpath->evaluate('//div[contains(@class,"view-options")]') as $node) {
 
-        foreach ($node->childNodes as $child) {
-            if (!$node->nodeName) {
-                continue;
+        $category =  $xpath->evaluate('string(.//h2[contains(@class,"heading")])', $node);
+
+        if (!$category) {
+            continue;
+        }
+
+        var_dump($category);
+
+        foreach($xpath->evaluate('.//div[contains(@class,"finishes-list-view")]',$node) as $node2) {
+            foreach($xpath->evaluate('.//div[contains(@class,"finishes-list-item")]',$node2) as $node3) {
+
+                $name = $xpath->evaluate('string(.//h4[contains(@class,"data-wish-item-name")])',$node3);
+                $name = str_replace('"','', $name);
+                $img = $xpath->evaluate('string(.//a/@href)', $node3);
+                $descr =  $xpath->evaluate('string(.//ul[contains(@class,"data-wish-item-descr")])', $node3);
+
+                if (!$name || !$img) {//|| !$descr
+                    continue;
+                }
+
+                $category = str_replace(' ','-',strtolower($category));
+
+                $items['name'][] = $name;
+                $items['img'][] = $img;
+                $items['descr'][] = $descr;
+                $items['category'][] = $category;
+
+                var_dump($items);
             }
-
-            $name = $xpath->evaluate('string(.//h4)', $child);
-            $img = $xpath->evaluate('string(.//a/@href)', $child);
-            $descr =  $xpath->evaluate('string(.//ul[contains(@class,"data-wish-item-descr")])', $child);
-
-            if (!$name || !$img || !$descr) {//|| !$descr
-                continue;
-            }
-
-            $items['name'][] = $xpath->evaluate('string(.//h4)', $child);
-            $items['img'][] = $xpath->evaluate('string(.//a/@href)', $child);
-            $items['descr'][] = $xpath->evaluate('string(.//ul[contains(@class,"data-wish-item-descr")])', $child);
-
-
-            // echo $child->nodeName, PHP_EOL;
         }
     }
 
@@ -47,17 +57,22 @@ function prepare_csv_data($products, $product_category) {
     $csv_data[] = array('title','img','descr','product_category');
 
     foreach($products as $product) {
-        $descr_lines = explode("\n", $product['descr']);
 
-        $descr = '<ul class="data-wish-item-descr">';
-        foreach ($descr_lines as $line) {
-            $trimmed_line = trim($line);
-            if ($trimmed_line) {
-                $descr .= '<li>' . $trimmed_line  . '</li>';
+        $descr = '';
+        if ($product['descr']) {
+            $descr_lines = explode("\n", $product['descr']);
+
+            $descr = '<ul class="data-wish-item-descr">';
+            foreach ($descr_lines as $line) {
+                $trimmed_line = trim($line);
+                if ($trimmed_line) {
+                    $descr .= '<li>' . $trimmed_line  . '</li>';
+                }
             }
+            $descr .= '</ul>';
         }
-        $descr .= '</ul>';
 
+        $product_category = isset($product['category']) ? $product['category'] : $product_category;
         $csv_data[] = array($product['name'], $product['img'], $descr, $product_category);
     }
 
