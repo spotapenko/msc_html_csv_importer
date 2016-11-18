@@ -5,13 +5,15 @@ require_once 'functions.php';
 
 //$url = 'http://localhost/test/msc/lightning.html';
 //$url = 'lightning.html';
-$url = 'kitchens-finishes.html';
+$url = 'kitchens-pantry-cabinets.html';
 $page =  @file_get_contents(SITE_URL . $url);
 //get heads
 $items = [
     'name' => [],
     'img' => [],
     'descr' => [],
+    'attributes' => [],
+    'category' => [],
 ];
 $dom = new DOMDocument();
 $dom->loadHTML($page);
@@ -23,13 +25,15 @@ $items = get_data_from_html($xpath);
 
 var_dump($items);
 
+
+
 $products = map_products_from_data($items);
 
-$csv_data = prepare_csv_data($products, '');
+$csv_data = prepare_csv_data($products);
 
 var_dump($csv_data);
 
-$filename = 'finishes-data.csv';
+$filename = 'kitchens-pantry-cabinets-data.csv';
 
 write_csv_file($filename, $csv_data);
 //generate csv
