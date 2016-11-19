@@ -70,12 +70,22 @@ function get_data_from_html($xpath)
                         $row = 0;
                         foreach ($xpath->evaluate('.//td', $source_attr_collections) as $source_attr_values) {
                             if (isset($attr_headers[$row])) {
+//                         var_dump('attributes values ');
+//                         var_dump($source_attr_values->nodeValue);
                                 //  var_dump($source_attr_values->nodeValue);
-                                $attr_value = str_replace('"', '', $source_attr_values->nodeValue);
+                                if ('Width' == $attr_headers[$row]  &&  'BLIND CORNER CABINETS' == $category) {
+                                    $attr_value = str_replace('" Door', '', $source_attr_values->nodeValue);
+                                } else {
+                                    $attr_value = str_replace('"', '', $source_attr_values->nodeValue);
+                                }
+
+                             //   $attr_value = $source_attr_values->nodeValue;
                                 $attr_values[$row] = $attr_value;
                             }
                             $row++;
                         }
+                     //   var_dump('111111');
+                     //   var_dump($attr_values);
 
                         $attr_collections[] = $attr_values;
                     }
@@ -95,6 +105,9 @@ function get_data_from_html($xpath)
                 }
                 //   continue;
                 $category = str_replace(' ', '-', strtolower($category));
+                if ('base-cabinets' == $category) {
+                    $category = 'base-cabinets-base-cabinets';
+                }
 
                 $variable_products[] = [
                     'name' => $name,
