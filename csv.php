@@ -23,18 +23,17 @@ $xpath = new DOMXPath($dom);
 //$container_class = 'finishes-list-view';
 $items = get_data_from_html($xpath);
 
-var_dump($items);
 
 
+//$products = map_products_from_data($items);
+//var_dump($items);
+$csv_data = prepare_csv_data($items);
 
-$products = map_products_from_data($items);
-
-$csv_data = prepare_csv_data($products);
-
-var_dump($csv_data);
+print "<pre>";
+print_r($csv_data);
+print "</pre>";
 
 $filename = 'kitchens-pantry-cabinets-data.csv';
 
-write_csv_file($filename, $csv_data);
 //generate csv
-
+write_csv_file($filename, $csv_data);
