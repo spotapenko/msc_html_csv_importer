@@ -6,8 +6,8 @@ require_once 'functions.php';
 //$url = 'http://localhost/test/msc/lightning.html';
 //$url = 'lightning.html';
 //config
-$url = 'kitchens-cabinets.html';
-$filename = 'kitchens-base-cabinets-data.csv';
+$url = 'kitchens-wall-cabinets.html';
+$filename = 'kitchens-wall-cabinets-data.csv';
 
 
 $page =  @file_get_contents(SITE_URL . $url);

@@ -107,6 +107,8 @@ function get_data_from_html($xpath)
                 $category = str_replace(' ', '-', strtolower($category));
                 if ('base-cabinets' == $category) {
                     $category = 'base-cabinets-base-cabinets';
+                } elseif ('wall-cabinets' == $category) {
+                    $category = 'wall-cabinets-wall-cabinets';
                 }
 
                 $variable_products[] = [
